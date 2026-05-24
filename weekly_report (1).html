@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Analytics & Engagement Report</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --anna-primary: #1a1a2e;
+    --anna-accent: #e94560;
+    --anna-gold: #f5a623;
+    --anna-light: #f8f4f0;
+    --mod-primary: #0d1b2a;
+    --mod-accent: #00b4d8;
+    --mod-gold: #90e0ef;
+    --mod-light: #f0f8ff;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f2ede8;
+    min-height: 100vh;
+    color: #1a1a1a;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: #1a1a2e;
+    padding: 28px 40px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .site-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(233,69,96,0.15);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .header-logo {
+    width: 38px; height: 38px;
+    background: var(--anna-accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .header-title {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 1.5rem;
+    letter-spacing: -0.3px;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.45);
+    font-size: 0.78rem;
+    margin-bottom: 24px;
+    margin-left: 52px;
+    font-weight: 300;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    position: relative;
+    z-index: 1;
+  }
+  .tab-btn {
+    padding: 12px 28px;
+    border: none;
+    background: rgba(255,255,255,0.07);
+    color: rgba(255,255,255,0.5);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 10px 10px 0 0;
+    transition: all 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .tab-btn:hover { background: rgba(255,255,255,0.12); color: #fff; }
+  .tab-btn.active {
+    background: #f2ede8;
+    color: #1a1a2e;
+    font-weight: 600;
+  }
+  .tab-btn.calc-tab.active { background: #1a1a2e; color: var(--anna-accent); border: 2px solid var(--anna-accent); border-bottom: none; }
+
+  /* CONTENT */
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .main-content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 20px 60px;
+  }
+
+  /* REPORT HEADER */
+  .report-banner {
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .anna-banner { background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 100%); }
+  .mod-banner { background: linear-gradient(135deg, #0d1b2a 0%, #0a3d55 100%); }
+  .report-banner::after {
+    content: '📊';
+    position: absolute;
+    right: 28px; top: 50%;
+    transform: translateY(-50%);
+    font-size: 64px;
+    opacity: 0.15;
+  }
+  .brand-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .anna-tag { background: var(--anna-accent); color: #fff; }
+  .mod-tag { background: var(--mod-accent); color: #fff; }
+  .report-banner h2 {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 1.7rem;
+    margin-bottom: 4px;
+  }
+  .report-banner p { color: rgba(255,255,255,0.55); font-size: 0.85rem; }
+
+  /* SECTION */
+  .section {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .section-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .anna-section .section-title { color: var(--anna-accent); }
+  .mod-section .section-title { color: var(--mod-accent); }
+
+  /* DAILY TABLE */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .data-table th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 2px solid #f0f0f0;
+    color: #888;
+  }
+  .data-table td {
+    padding: 12px 12px;
+    border-bottom: 1px solid #f5f5f5;
+    color: #333;
+  }
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr.totals-row td {
+    font-weight: 600;
+    background: #fafafa;
+    border-radius: 6px;
+  }
+  .data-table tr:hover td { background: #fafafa; }
+  .highlight-day { font-weight: 600; }
+
+  /* STAT PILLS */
+  .val-high { color: #16a34a; font-weight: 600; }
+  .val-low { color: #dc2626; }
+  .val-mid { color: #d97706; }
+
+  /* SUMMARY METRICS */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+  }
+  .metric-card {
+    background: #fafafa;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border: 1px solid #f0f0f0;
+  }
+  .metric-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #999;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+  .metric-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+  .anna-val { color: var(--anna-primary); }
+  .mod-val { color: var(--mod-primary); }
+
+  /* TEXT INPUTS */
+  .field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .field-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: #1a1a1a;
+    transition: border-color 0.2s;
+    resize: vertical;
+    background: #fafafa;
+  }
+  .field-input:focus {
+    outline: none;
+    border-color: var(--anna-accent);
+    background: #fff;
+  }
+  .mod-field:focus { border-color: var(--mod-accent); }
+
+  .link-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fafafa;
+    border: 1.5px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .link-display a {
+    color: var(--anna-accent);
+    font-size: 0.85rem;
+    word-break: break-all;
+    text-decoration: none;
+  }
+  .link-display a:hover { text-decoration: underline; }
+  .mod-link a { color: var(--mod-accent); }
+
+  .field-group { margin-bottom: 16px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* FLAGS */
+  .flag-box {
+    background: #fff8f0;
+    border: 1.5px solid #ffd4a3;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 0.88rem;
+    color: #7c3a00;
+  }
+  .mod-flag-box { background: #f0f9ff; border-color: #a3d9f5; color: #003a5c; }
+
+  /* CALCULATOR TAB */
+  .calc-wrapper {
+    max-width: 680px;
+    margin: 40px auto;
+    padding: 0 20px 60px;
+  }
+  .calc-card {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 36px;
+    color: #fff;
+    box-shadow: 0 8px 40px rgba(26,26,46,0.25);
+  }
+  .calc-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    margin-bottom: 6px;
+  }
+  .calc-sub { color: rgba(255,255,255,0.45); font-size: 0.82rem; margin-bottom: 28px; }
+  .calc-input-group { margin-bottom: 18px; }
+  .calc-label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 8px; display: block; }
+  .calc-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+  }
+  .calc-input::placeholder { color: rgba(255,255,255,0.25); }
+  .calc-input:focus { outline: none; border-color: var(--anna-accent); background: rgba(255,255,255,0.1); }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .calc-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--anna-accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.3px;
+  }
+  .calc-btn:hover { background: #d63851; }
+  .calc-btn:active { transform: scale(0.98); }
+  .calc-result {
+    margin-top: 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: none;
+  }
+  .calc-result.show { display: block; }
+  .result-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+  .result-value { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--anna-accent); line-height: 1; }
+  .result-breakdown { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .breakdown-item { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 14px; }
+  .breakdown-label { font-size: 0.68rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+  .breakdown-val { font-weight: 600; color: #fff; font-size: 1.05rem; }
+  .rating-badge {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    margin-top: 14px;
+  }
+  .rating-excellent { background: rgba(22,163,74,0.2); color: #4ade80; }
+  .rating-good { background: rgba(234,179,8,0.2); color: #fbbf24; }
+  .rating-low { background: rgba(239,68,68,0.2); color: #f87171; }
+
+  .divider { height: 1px; background: #eee; margin: 18px 0; }
+
+  @media (max-width: 600px) {
+    .two-col, .calc-grid, .metrics-grid, .result-breakdown { grid-template-columns: 1fr; }
+    .site-header { padding: 20px 16px 0; }
+    .main-content { padding: 20px 12px 40px; }
+    .section { padding: 18px 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="site-header">
+  <div class="header-top">
+    <div class="header-logo">📈</div>
+    <div class="header-title">Analytics & Engagement Hub</div>
+  </div>
+  <div class="header-sub">Prepared by Cristine · Week of May 18–22, 2026</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('anna')">🛍️ Anna-Kaci</button>
+    <button class="tab-btn" onclick="switchTab('mod')">✨ Modenaire</button>
+    <button class="tab-btn calc-tab" onclick="switchTab('calc')">🧮 IG Calculator</button>
+  </div>
+</div>
+
+<!-- ======================== ANNA-KACI TAB ======================== -->
+<div id="tab-anna" class="tab-content active">
+  <div class="main-content">
+    <div class="report-banner anna-banner">
+      <div class="brand-tag anna-tag">Anna-Kaci</div>
+      <h2>Weekly Analytics Report</h2>
+      <p>📅 Week of May 18–22, 2026</p>
+    </div>
+
+    <!-- Daily Log -->
+    <div class="section anna-section">
+      <div class="section-title">📅 Daily Log</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Day</th><th>Impressions</th><th>Reach</th><th>Eng. Rate</th><th>Clicks</th><th>New Followers</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Monday</td><td>336</td><td>276</td><td class="val-mid">3.52</td><td>1</td><td>0</td><td></td></tr>
+          <tr><td>Tuesday</td><td>214</td><td>156</td><td class="val-low">1.92</td><td>1</td><td>0</td><td></td></tr>
+          <tr><td>Wednesday</td><td>252</td><td>176</td><td class="val-low">1.38</td><td>0</td><td>0</td><td></td></tr>
+          <tr><td class="highlight-day">Thursday 🏆</td><td class="val-high">3223</td><td class="val-high">2431</td><td class="val-high">10.9</td><td>0</td><td class="val-high">6</td><td></td></tr>
+          <tr><td>Friday</td><td>294</td><td>231</td><td class="val-mid">5.2</td><td>0</td><td>0</td><td></td></tr>
+          <tr class="totals-row"><td>TOTALS / AVG</td><td>4319</td><td>3270</td><td>4.584</td><td>0.4</td><td>6</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Weekly Summary -->
+    <div class="section anna-section">
+      <div class="section-title">📊 Weekly Summary</div>
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-label">Impressions</div><div class="metric-value anna-val">4,319</div></div>
+        <div class="metric-card"><div class="metric-label">Reach</div><div class="metric-value anna-val">3,270</div></div>
+        <div class="metric-card"><div class="metric-label">Eng. Rate</div><div class="metric-value anna-val">4.58%</div></div>
+        <div class="metric-card"><div class="metric-label">Clicks / CTR</div><div class="metric-value anna-val">0.4</div></div>
+        <div class="metric-card"><div class="metric-label">New Followers</div><div class="metric-value anna-val">+6</div></div>
+      </div>
+    </div>
+
+    <!-- Top Performing Content -->
+    <div class="section anna-section">
+      <div class="section-title">🏆 Top Performing Content</div>
+      <div class="field-group">
+        <label class="field-label">Best Post / Piece</label>
+        <div class="link-display">
+          <span>🔗</span>
+          <a href="https://www.instagram.com/p/DYnJpyFSF4E/" target="_blank">https://www.instagram.com/p/DYnJpyFSF4E/</a>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Why It Performed Well</label>
+        <textarea class="field-input" rows="3" placeholder="Enter reason here...">The angle of the post resonates with a wide audience because it reflects experiences and emotions that many people—especially artists and art enthusiasts—can relate to.</textarea>
+      </div>
+    </div>
+
+    <!-- Audience Observations -->
+    <div class="section anna-section">
+      <div class="section-title">📣 Audience Observations</div>
+      <div class="field-group">
+        <label class="field-label">Notes</label>
+        <textarea class="field-input" rows="3" placeholder="Enter audience observations..."></textarea>
+      </div>
+    </div>
+
+    <!-- Narrative & Flags -->
+    <div class="section anna-section">
+      <div class="section-title">🚩 Weekly Narrative & Flags</div>
+      <div class="field-group">
+        <label class="field-label">Key Takeaway</label>
+        <textarea class="field-input" rows="3" placeholder="Enter key takeaway..."></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Anything to Flag or Escalate</label>
+        <textarea class="field-input" rows="3" placeholder="Enter flags or escalations..."></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== MODENAIRE TAB ======================== -->
+<div id="tab-mod" class="tab-content">
+  <div class="main-content">
+    <div class="report-banner mod-banner">
+      <div class="brand-tag mod-tag">Modenaire</div>
+      <h2>Weekly Analytics Report</h2>
+      <p>📅 Week of May 18–22, 2026</p>
+    </div>
+
+    <!-- Daily Log -->
+    <div class="section mod-section">
+      <div class="section-title">📅 Daily Log</div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Day</th><th>Impressions</th><th>Reach</th><th>Eng. Rate</th><th>Clicks</th><th>New Followers</th><th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Monday</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Tuesday</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Wednesday</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Thursday</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>Friday</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr class="totals-row"><td>TOTALS / AVG</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td></td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.78rem;color:#aaa;margin-top:12px;">📝 Fill in daily data throughout the week.</p>
+    </div>
+
+    <!-- Weekly Summary -->
+    <div class="section mod-section">
+      <div class="section-title">📊 Weekly Summary</div>
+      <div class="metrics-grid">
+        <div class="metric-card"><div class="metric-label">Impressions</div><div class="metric-value mod-val">—</div></div>
+        <div class="metric-card"><div class="metric-label">Reach</div><div class="metric-value mod-val">—</div></div>
+        <div class="metric-card"><div class="metric-label">Eng. Rate</div><div class="metric-value mod-val">—</div></div>
+        <div class="metric-card"><div class="metric-label">Clicks / CTR</div><div class="metric-value mod-val">—</div></div>
+        <div class="metric-card"><div class="metric-label">New Followers</div><div class="metric-value mod-val">—</div></div>
+      </div>
+    </div>
+
+    <!-- Top Performing Content -->
+    <div class="section mod-section">
+      <div class="section-title">🏆 Top Performing Content</div>
+      <div class="field-group">
+        <label class="field-label">Best Post / Piece</label>
+        <div class="link-display mod-link">
+          <span>🔗</span>
+          <a href="#" target="_blank">Add link here...</a>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Why It Performed Well</label>
+        <textarea class="field-input mod-field" rows="3" placeholder="Enter reason here..."></textarea>
+      </div>
+    </div>
+
+    <!-- Audience Observations -->
+    <div class="section mod-section">
+      <div class="section-title">📣 Audience Observations</div>
+      <div class="field-group">
+        <label class="field-label">Notes</label>
+        <textarea class="field-input mod-field" rows="3" placeholder="Enter audience observations..."></textarea>
+      </div>
+    </div>
+
+    <!-- Narrative & Flags -->
+    <div class="section mod-section">
+      <div class="section-title">🚩 Weekly Narrative & Flags</div>
+      <div class="field-group">
+        <label class="field-label">Key Takeaway</label>
+        <textarea class="field-input mod-field" rows="3" placeholder="Enter key takeaway..."></textarea>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Anything to Flag or Escalate</label>
+        <textarea class="field-input mod-field" rows="3" placeholder="Enter flags or escalations..."></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== CALCULATOR TAB ======================== -->
+<div id="tab-calc" class="tab-content">
+  <div class="calc-wrapper">
+    <div class="calc-card">
+      <div class="calc-title">Instagram Engagement Calculator</div>
+      <div class="calc-sub">Calculate your engagement rate and benchmark performance</div>
+
+      <div class="calc-input-group">
+        <label class="calc-label">Total Followers</label>
+        <input class="calc-input" type="number" id="followers" placeholder="e.g. 10000">
+      </div>
+
+      <div class="calc-grid">
+        <div class="calc-input-group">
+          <label class="calc-label">Likes</label>
+          <input class="calc-input" type="number" id="likes" placeholder="e.g. 350">
+        </div>
+        <div class="calc-input-group">
+          <label class="calc-label">Comments</label>
+          <input class="calc-input" type="number" id="comments" placeholder="e.g. 42">
+        </div>
+        <div class="calc-input-group">
+          <label class="calc-label">Saves</label>
+          <input class="calc-input" type="number" id="saves" placeholder="e.g. 80">
+        </div>
+        <div class="calc-input-group">
+          <label class="calc-label">Shares</label>
+          <input class="calc-input" type="number" id="shares" placeholder="e.g. 15">
+        </div>
+      </div>
+
+      <div class="calc-input-group">
+        <label class="calc-label">Reach (optional — for reach-based rate)</label>
+        <input class="calc-input" type="number" id="reach" placeholder="e.g. 3270">
+      </div>
+
+      <button class="calc-btn" onclick="calculate()">Calculate Engagement Rate</button>
+
+      <div class="calc-result" id="result">
+        <div class="result-label">Engagement Rate (Follower-Based)</div>
+        <div class="result-value" id="eng-rate">0%</div>
+        <div id="reach-rate-row" style="margin-top:10px;display:none;">
+          <div class="result-label">Engagement Rate (Reach-Based)</div>
+          <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--mod-accent)" id="reach-rate">0%</div>
+        </div>
+        <div class="result-breakdown">
+          <div class="breakdown-item"><div class="breakdown-label">Total Interactions</div><div class="breakdown-val" id="total-int">—</div></div>
+          <div class="breakdown-item"><div class="breakdown-label">Likes</div><div class="breakdown-val" id="b-likes">—</div></div>
+          <div class="breakdown-item"><div class="breakdown-label">Comments</div><div class="breakdown-val" id="b-comments">—</div></div>
+          <div class="breakdown-item"><div class="breakdown-label">Saves + Shares</div><div class="breakdown-val" id="b-saves">—</div></div>
+        </div>
+        <div id="rating-badge-el"></div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.08);font-size:0.75rem;color:rgba(255,255,255,0.35);">
+          <strong style="color:rgba(255,255,255,0.5)">Benchmarks:</strong> &lt;1% Low · 1–3% Average · 3–6% Good · &gt;6% Excellent
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const btns = document.querySelectorAll('.tab-btn');
+  const map = { anna: 0, mod: 1, calc: 2 };
+  btns[map[name]].classList.add('active');
+}
+
+function calculate() {
+  const followers = parseFloat(document.getElementById('followers').value) || 0;
+  const likes = parseFloat(document.getElementById('likes').value) || 0;
+  const comments = parseFloat(document.getElementById('comments').value) || 0;
+  const saves = parseFloat(document.getElementById('saves').value) || 0;
+  const shares = parseFloat(document.getElementById('shares').value) || 0;
+  const reach = parseFloat(document.getElementById('reach').value) || 0;
+
+  if (!followers) { alert('Please enter your follower count!'); return; }
+
+  const total = likes + comments + saves + shares;
+  const rate = (total / followers) * 100;
+
+  document.getElementById('eng-rate').textContent = rate.toFixed(2) + '%';
+  document.getElementById('total-int').textContent = total.toLocaleString();
+  document.getElementById('b-likes').textContent = likes.toLocaleString();
+  document.getElementById('b-comments').textContent = comments.toLocaleString();
+  document.getElementById('b-saves').textContent = (saves + shares).toLocaleString();
+
+  if (reach) {
+    const reachRate = (total / reach) * 100;
+    document.getElementById('reach-rate').textContent = reachRate.toFixed(2) + '%';
+    document.getElementById('reach-rate-row').style.display = 'block';
+  } else {
+    document.getElementById('reach-rate-row').style.display = 'none';
+  }
+
+  let badge = '';
+  if (rate >= 6) badge = '<div class="rating-badge rating-excellent">🌟 Excellent Engagement</div>';
+  else if (rate >= 3) badge = '<div class="rating-badge rating-good">👍 Good Engagement</div>';
+  else if (rate >= 1) badge = '<div class="rating-badge rating-good">📊 Average Engagement</div>';
+  else badge = '<div class="rating-badge rating-low">⚠️ Low Engagement</div>';
+  document.getElementById('rating-badge-el').innerHTML = badge;
+
+  document.getElementById('result').classList.add('show');
+}
+</script>
+</body>
+</html>
